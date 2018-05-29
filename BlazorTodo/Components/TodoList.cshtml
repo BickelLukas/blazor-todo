@@ -20,7 +20,7 @@
     <ul class="todo-list">
         @foreach (var item in _items)
         {
-            <Todo Item="item" RemoveAction="RemoveTodo" />
+            <Todo Item="item" RemoveAction="RemoveTodo" StateChanged="ItemStateChanged" />
         }
     </ul>
 </section>
@@ -54,5 +54,11 @@ void AddItem(TodoItem item)
 {
     _items.Add(item);
     StateHasChanged();
+}
+
+void ItemStateChanged()
+{
+    StateHasChanged();
+
 }
 }

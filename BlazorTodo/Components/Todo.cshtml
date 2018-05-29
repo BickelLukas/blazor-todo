@@ -1,6 +1,6 @@
 ﻿<li class="@(Item.GetClass())">
     <div class="view">
-        <input class="toggle" type="checkbox" bind="@Item.Completed" />
+        <input class="toggle" type="checkbox" bind="@Item.Completed" onchange="@ToggleCompleted" />
         <label ondblclick="@ToggleEditing">@Item.Title</label>
         <button class="destroy" onclick="@Remove"></button>
     </div>
@@ -19,6 +19,9 @@ TodoItem Item { get; set; }
 [Parameter]
 Action<TodoItem> RemoveAction { get; set; }
 
+[Parameter]
+Action StateChanged { get; set; }
+
 void ToggleEditing()
 {
     Item.Editing = !Item.Editing;
@@ -27,6 +30,12 @@ void ToggleEditing()
 void Remove()
 {
     RemoveAction(Item);
+}
+
+void ToggleCompleted()
+{
+    Item.Completed = !Item.Completed;
+    StateChanged();
 }
 
 }

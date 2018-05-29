@@ -1,0 +1,58 @@
+﻿<header class="header">
+    <h1>todos</h1>
+    <AddTodo AddItemAction="AddItem" />
+</header>
+<section class="main">
+    @if (_items.Any())
+    {
+        if (_items.All(x => x.Completed))
+        {
+
+            <input class="toggle-all" type="checkbox" checked="checked" />
+        }
+        else
+        {
+            <input class="toggle-all" type="checkbox" />
+        }
+        <label onclick="@ToggleAll"></label>
+    }
+
+    <ul class="todo-list">
+        @foreach (var item in _items)
+        {
+            <Todo Item="item" RemoveAction="RemoveTodo" />
+        }
+    </ul>
+</section>
+<footer class="footer">
+    <span class="todo-count"><strong>@_items.Count(x => !x.Completed)</strong> @(_items.Count(x => !x.Completed) == 1 ? "item" : "Items") left</span>
+    <button class="clear-completed" onclick="@ClearCompleted">Clear completed</button>
+</footer>
+
+@functions
+{
+private readonly List<TodoItem> _items = new List<TodoItem>();
+
+void ClearCompleted()
+{
+    _items.RemoveAll(x => x.Completed);
+}
+
+void RemoveTodo(TodoItem item)
+{
+    _items.Remove(item);
+    StateHasChanged();
+}
+
+void ToggleAll()
+{
+    var allCompleted = _items.All(x => x.Completed);
+    _items.ForEach(x => x.Completed = !allCompleted);
+}
+
+void AddItem(TodoItem item)
+{
+    _items.Add(item);
+    StateHasChanged();
+}
+}

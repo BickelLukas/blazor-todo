@@ -1,0 +1,22 @@
+﻿<form id="todo-form" onsubmit="@Add">
+    <input class="new-todo" placeholder="What needs to be done?" autofocus="" bind="@_newItemText" />
+</form>
+
+@functions
+{
+
+string _newItemText;
+
+[Parameter]
+Action<TodoItem> AddItemAction { get; set; }
+
+void Add()
+{
+    AddItemAction(new TodoItem
+    {
+        Title = _newItemText
+    });
+    _newItemText = null;
+}
+
+}
